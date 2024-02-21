@@ -46,17 +46,28 @@ public class Reservation {
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
-    public void updateDates (Date in, Date out){
-        chekIn = in;
-        checkOut = out;
+    public String updateDates(Date chekIn, Date checkOut) {
+
+        Date now = new Date();
+        if (chekIn.before(now) || checkOut.before(now)) {
+            return "Erro na reserva: Data de reserva para atualizações devem ser futuras";
+        }
+        if (!checkOut.after(chekIn)) {
+            return "Erro na reserva: Check-Out deve ser após a data de Check-In.";
+        }
+        this.chekIn = chekIn;
+        this.checkOut = checkOut;
+        return null;
     }
+
+
     @Override
-    public   String toString() {
+    public String toString() {
         return "Room"
                 + roomNumber
                 + ", check-in: "
                 + sdf.format(chekIn)
-                + ", check- out: "
+                + ", check-out: "
                 + sdf.format(checkOut)
                 + ", "
                 + duration()
